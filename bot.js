@@ -76,6 +76,7 @@ module.exports = {
       res.end(`
         <html>
         <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Crab Rave Bot</title>
         </head>
         <body>
@@ -92,7 +93,7 @@ module.exports = {
         </form>
         <a href="https://t.me/crabravebot">also available as a Telegram bot</a>
         </main>
-        <img id="preview" src="https://${process.env.PROJECT_DOMAIN}.glitch.me/video/.png">
+        <img id="preview" style="max-width: 100%;" src="https://${process.env.PROJECT_DOMAIN}.glitch.me/video/.png">
         <script type="text/javascript">
         const img = document.getElementById('preview'),
           text = document.getElementById('text'),
@@ -137,7 +138,13 @@ module.exports = {
         ev.send();
       }
       const style = parsed.query.style || 'classic';
-      const path = require('path').join('/tmp', style, match[0]);
+      if (!Object.keys(STYLES).includes(style)) {
+        console.error("Bad style");
+        res.writeHead(400);
+        res.end();
+        return;
+      }
+      const path = require('path').join('/tmp', style, encodeURIComponent(match[0]));
       if (type === 'mp4') {
         res.setHeader('Content-Type', 'video/mp4');
       } else {
