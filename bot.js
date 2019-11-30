@@ -29,6 +29,10 @@ const STYLES = {
     'video': 'https://cdn.glitch.com/70ea37b5-d264-46e5-a1db-29c786c86515%2FCrabRaveOtamatone.mp4?v=1566354239409',
     'thumb': 'https://cdn.glitch.com/70ea37b5-d264-46e5-a1db-29c786c86515%2FCrabRaveOtamatoneBackground.png?v=1566354702285',
   },
+  'garfield': {
+    'video': 'https://cdn.glitch.com/70ea37b5-d264-46e5-a1db-29c786c86515%2FCrabRaveGarfield.mp4?v=1575143374116',
+    'thumb': 'https://cdn.glitch.com/70ea37b5-d264-46e5-a1db-29c786c86515%2FCrabRaveGarfieldBackground.png?v=1575143434563',
+  },
 }
 
 // inline query
@@ -52,6 +56,14 @@ bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
         mime_type: "video/mp4",
         thumb_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".png?v1&style=otamatone",
         title: 'Otamatone (original by TheRealSullyG)'
+      },
+      {
+        type: "video",
+        id: "garfield",
+        video_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".mp4?v1&style=garfield",
+        mime_type: "video/mp4",
+        thumb_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".png?v1&style=garfield",
+        title: 'Garfield (original by @jondancesto)'
       },
     ];
     return answerInlineQuery(result);
@@ -88,6 +100,7 @@ module.exports = {
           Style:
           <input type="radio" id="classic" name="style" value="classic" checked><label for="classic">Classic</label>
           <input type="radio" id="otamatone" name="style" value="otamatone"><label for="otamatone">Otamatone</label> (<a href="https://youtu.be/VI5I3MuKJlo">original</a> by TheRealSullyG)
+          <input type="radio" id="garfield" name="style" value="garfield"><label for="garfield">Garfield</label> (<a href="https://twitter.com/jondancesto/status/1199796307218427904">original</a> by @jondancesto)
         </p>
         <input type="submit" value="Overlay!">
         </form>
