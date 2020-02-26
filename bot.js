@@ -159,7 +159,7 @@ module.exports = {
         res.end();
         return;
       }
-      const path = require('path').join('/tmp', style, encodeURIComponent(match[0]));
+      const path = require('path').join('/tmp', style, encodeURIComponent(match[1]) + '.' + match[2]);
       if (type === 'mp4') {
         res.setHeader('Content-Type', 'video/mp4');
       } else {
@@ -186,7 +186,6 @@ module.exports = {
           }
           const svg = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' + dom.serialize();
           fs.writeFileSync(path + '.svg', svg);
-          console.log('rsvg-convert', '--format=png', '--output=' + path + '.png', path + '.svg');
           child_process.spawnSync('rsvg-convert', ['--format=png', '--output=' + path + '.png', path + '.svg'], {stdio: ['inherit', 'inherit', 'inherit']});
         }
         if (type === 'mp4') {
