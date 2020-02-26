@@ -186,8 +186,8 @@ module.exports = {
           }
           const svg = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' + dom.serialize();
           fs.writeFileSync(path + '.svg', svg);
-          console.log('convert', '-background', 'none', path + '.svg', path + '.png');
-          child_process.spawnSync('convert', ['-background', 'none', path + '.svg', path + '.png'], {stdio: ['inherit', 'inherit', 'inherit']});
+          console.log('rsvg-convert', '--format=png', '--output=' + path + '.png', path + '.svg');
+          child_process.spawnSync('rsvg-convert', ['--format=png', '--output=' + path + '.png', path + '.svg'], {stdio: ['inherit', 'inherit', 'inherit']});
         }
         if (type === 'mp4') {
           let background = STYLES[style].video;
