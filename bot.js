@@ -16,8 +16,9 @@ const bot = new Composer();
 bot.command('/start', async ({ from, replyWithMarkdown, botInfo }) =>
   replyWithMarkdown(`Hi *${from.first_name || from.username}*!
 To shitpost, type @${botInfo.username} and type the text you want to overlay over crab rave.
-This was made by @boringcactus in one afternoon when she was bored.
-This bot isn't super reliable but the source is at https://glitch.com/edit/#!/${process.env.PROJECT_DOMAIN}`));
+This was originally made by @boringcactus in one afternoon when she was bored.
+This bot isn't super reliable but the source is at https://glitch.com/edit/#!/${process.env.PROJECT_DOMAIN},
+and you can use this bot from the Web at https://${process.env.PROJECT_DOMAIN}.glitch.me/`));
 
 // styles
 const STYLES = {
@@ -104,7 +105,8 @@ module.exports = {
         </p>
         <input type="submit" value="Overlay!">
         </form>
-        <a href="https://t.me/crabravebot">also available as a Telegram bot</a>
+        <p><a href="https://t.me/crabravebot">also available as a Telegram bot</a></p>
+        <p>brought to you by <a href="https://www.boringcactus.com">boringcactus</a></p>
         </main>
         <img id="preview" style="max-width: 100%;" src="https://${process.env.PROJECT_DOMAIN}.glitch.me/video/.png">
         <script type="text/javascript">
@@ -112,7 +114,7 @@ module.exports = {
           text = document.getElementById('text'),
           classic = document.getElementById('classic');
         setInterval(() => {
-          let style = classic.checked ? 'classic' : 'otamatone';
+          let style = document.querySelector('input[name="style"]:checked').value;
           img.src = "https://${process.env.PROJECT_DOMAIN}.glitch.me/video/" + encodeURIComponent(text.value) + '.png?style=' + style;
         }, 1000);
         </script>
