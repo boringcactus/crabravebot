@@ -17,8 +17,8 @@ bot.command('/start', async ({ from, replyWithMarkdown, botInfo }) =>
   replyWithMarkdown(`Hi *${from.first_name || from.username}*!
 To shitpost, type @${botInfo.username} and type the text you want to overlay over crab rave.
 This was originally made by @boringcactus in one afternoon when she was bored.
-This bot isn't super reliable but the source is at https://glitch.com/edit/#!/${process.env.PROJECT_DOMAIN},
-and you can use this bot from the Web at https://${process.env.PROJECT_DOMAIN}.glitch.me/`));
+This bot isn't super reliable but the source is at https://github.com/boringcactus/crabravebot,
+and you can use this bot from the Web at https://crabravebot.herokuapp.com/`));
 
 // styles
 const STYLES = {
@@ -45,25 +45,25 @@ bot.on('inline_query', async ({ inlineQuery, answerInlineQuery }) => {
       {
         type: "video",
         id: "classic",
-        video_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".mp4?v1",
+        video_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".mp4?v1",
         mime_type: "video/mp4",
-        thumb_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".png?v1",
+        thumb_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".png?v1",
         title: 'Classic'
       },
       {
         type: "video",
         id: "otamatone",
-        video_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".mp4?v1&style=otamatone",
+        video_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".mp4?v1&style=otamatone",
         mime_type: "video/mp4",
-        thumb_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".png?v1&style=otamatone",
+        thumb_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".png?v1&style=otamatone",
         title: 'Otamatone (original by TheRealSullyG)'
       },
       {
         type: "video",
         id: "garfield",
-        video_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".mp4?v1&style=garfield",
+        video_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".mp4?v1&style=garfield",
         mime_type: "video/mp4",
-        thumb_url: "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(query) + ".png?v1&style=garfield",
+        thumb_url: "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(query) + ".png?v1&style=garfield",
         title: 'Garfield (original by @jondancesto)'
       },
     ];
@@ -108,14 +108,14 @@ module.exports = {
         <p><a href="https://t.me/crabravebot">also available as a Telegram bot</a></p>
         <p>brought to you by <a href="https://www.boringcactus.com">boringcactus</a></p>
         </main>
-        <img id="preview" style="max-width: 100%;" src="https://${process.env.PROJECT_DOMAIN}.glitch.me/video/.png">
+        <img id="preview" style="max-width: 100%;" src="https://crabravebot.herokuapp.com/video/.png">
         <script type="text/javascript">
         const img = document.getElementById('preview'),
           text = document.getElementById('text'),
           classic = document.getElementById('classic');
         setInterval(() => {
           let style = document.querySelector('input[name="style"]:checked').value;
-          img.src = "https://${process.env.PROJECT_DOMAIN}.glitch.me/video/" + encodeURIComponent(text.value) + '.png?style=' + style;
+          img.src = "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(text.value) + '.png?style=' + style;
         }, 1000);
         </script>
         </body>
@@ -126,7 +126,7 @@ module.exports = {
       const data = parsed.query.text;
       const style = parsed.query.style;
       res.writeHead(303, {
-        'Location': "https://" + process.env.PROJECT_DOMAIN + ".glitch.me/video/" + encodeURIComponent(data) + ".mp4?style=" + style
+        'Location': "https://crabravebot.herokuapp.com/video/" + encodeURIComponent(data) + ".mp4?style=" + style
       });
       res.end();
     } else if (req.url.startsWith('/video/')) {
