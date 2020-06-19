@@ -3,3 +3,4 @@ python-dotenv
 Pillow
 libhoney
 Flask
+gunicorn; sys_platform != 'win32'
