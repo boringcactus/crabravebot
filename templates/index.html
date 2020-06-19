@@ -11,11 +11,10 @@
         <input type="hidden" name="ext" value="mp4">
         <p>
             Style:
-            <input type="radio" id="classic" name="style" value="classic" checked><label for="classic">Classic</label>
-            <input type="radio" id="otamatone" name="style" value="otamatone"><label for="otamatone">Otamatone</label> (<a
-                href="https://youtu.be/VI5I3MuKJlo">original</a> by TheRealSullyG)
-            <input type="radio" id="garfield" name="style" value="garfield"><label for="garfield">Garfield</label> (<a
-                href="https://twitter.com/jondancesto/status/1199796307218427904">original</a> by @jondancesto)
+            {% for style in styles %}
+            <input type="radio" id="{{ style.id }}" name="style" value="{{ style.id }}" {% if style.id == 'classic' %}checked{% endif %}>
+            <label for="{{ style.id }}">{{ style.name }}</label> (<a href="{{ style.source }}">source</a>)
+            {% endfor %}
         </p>
         <input type="submit" value="Overlay!">
     </form>

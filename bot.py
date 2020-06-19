@@ -8,13 +8,14 @@ import subprocess
 import tempfile
 from queue import Queue
 from threading import Thread
+import json
 
 import telegram
 from telegram.ext import Dispatcher, MessageHandler, CommandHandler, InlineQueryHandler, Filters, CallbackContext
 from dotenv import load_dotenv, find_dotenv
 from PIL import Image, ImageDraw, ImageFont
 import libhoney
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
 load_dotenv(find_dotenv())
@@ -33,7 +34,7 @@ class Style:
     """Crab rave style"""
     id: str
     name: str
-    desc: str
+    source: str
     image: Path
     video: Path
 
@@ -43,15 +44,43 @@ def get_styles():
     result = []
     for folder in templates.iterdir():
         s_id = folder.name
-        name = s_id
-        desc = s_id
+        with list(folder.glob('*.json'))[0].open('r') as meta:
+            metadata = json.load(meta)
+            name = metadata['name']
+            source = metadata['source']
         image = list(folder.glob('*.png'))[0]
         video = list(folder.glob('*.mp4'))[0]
-        result.append(Style(s_id, name, desc, image, video))
+        result.append(Style(s_id, name, source, image, video))
     return result
 
 
 STYLES = get_styles()
+
+
+def word_wrap(text: str, draw: ImageDraw.ImageDraw, width: int) -> str:
+    text_width, text_height = draw.multiline_textsize(text, font=font)
+    if text_width > width:
+        lines = text.splitlines()
+        wrapped_text = []
+        for line in lines:
+            line_width, _ = draw.textsize(line, font=font)
+            if line_width > width:
+                new_line = ''
+                last_line = new_line
+                for word in line.split():
+                    if len(new_line) > 0:
+                        new_line += ' '
+                    new_line += word
+                    line_width, _ = draw.textsize(new_line, font=font)
+                    if line_width > width:
+                        wrapped_text.append(last_line)
+                        new_line = word
+                    last_line = new_line
+                if len(last_line) > 0:
+                    wrapped_text.append(last_line)
+            else:
+                wrapped_text.append(line)
+        return '\n'.join(wrapped_text)
 
 
 def render_text(text: str, base: Image):
@@ -65,11 +94,12 @@ def render_text(text: str, base: Image):
         raise ValueError('Base image {}, not RGB/RGBA'.format(base.mode))
 
     draw = ImageDraw.Draw(base)
+    text = word_wrap(text, draw, base.width)
     text_width, text_height = draw.multiline_textsize(text, font=font)
     center_x = base.width // 2
     center_y = base.height // 2
     draw.multiline_text((center_x - text_width / 2, center_y - text_height / 2), text, font=font,
-                        fill=white, stroke_width=1, stroke_fill=black)
+                        fill=white, stroke_width=1, stroke_fill=black, align='center')
 
 
 def make_image(text: str, style_id: str):
@@ -151,7 +181,7 @@ def message(update: telegram.Update, context: CallbackContext):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', styles=STYLES)
 
 
 @app.route('/render')
