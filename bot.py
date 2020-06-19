@@ -179,6 +179,7 @@ WEBHOOK = '/webhook/' + TOKEN
 @app.route(WEBHOOK, methods=['POST'])
 def webhook():
     update_queue.put(telegram.Update.de_json(request.get_json(), bot))
+    return 'ok'
 
 
 bot = telegram.Bot(token=TOKEN)
@@ -188,7 +189,7 @@ dp = Dispatcher(bot, update_queue, use_context=True)
 # Add handlers
 dp.add_handler(CommandHandler('start', start))
 dp.add_handler(InlineQueryHandler(inline_query))
-dp.add_handler(MessageHandler(Filters.all, message))
+dp.add_handler(MessageHandler(Filters.text, message))
 
 thread = Thread(target=dp.start, name='dispatcher')
 thread.start()
