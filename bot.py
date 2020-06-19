@@ -9,6 +9,7 @@ import tempfile
 from queue import Queue
 from threading import Thread
 import json
+from typing import Optional
 
 import telegram
 from telegram.ext import Dispatcher, MessageHandler, CommandHandler, InlineQueryHandler, Filters, CallbackContext
@@ -81,9 +82,11 @@ def word_wrap(text: str, draw: ImageDraw.ImageDraw, width: int) -> str:
             else:
                 wrapped_text.append(line)
         return '\n'.join(wrapped_text)
+    else:
+        return text
 
 
-def render_text(text: str, base: Image):
+def render_text(text: Optional[str], base: Image):
     if base.mode == 'RGB':
         white = (255, 255, 255)
         black = (0, 0, 0)
@@ -93,6 +96,8 @@ def render_text(text: str, base: Image):
     else:
         raise ValueError('Base image {}, not RGB/RGBA'.format(base.mode))
 
+    if text is None:
+        text = ''
     draw = ImageDraw.Draw(base)
     text = word_wrap(text, draw, base.width)
     text_width, text_height = draw.multiline_textsize(text, font=font)
