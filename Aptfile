@@ -1,1 +1,2 @@
-librsvg2-bin
+gunicorn
+ffmpeg

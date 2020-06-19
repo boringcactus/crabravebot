@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crab Rave Bot</title>
+</head>
+<body>
+<main>
+    <h1>it's a tool for adding things to crab rave</h1>
+    <form action="/render" method="GET">
+        <textarea id="text" name="text" rows="6" cols="25"></textarea>
+        <input type="hidden" name="ext" value="mp4">
+        <p>
+            Style:
+            <input type="radio" id="classic" name="style" value="classic" checked><label for="classic">Classic</label>
+            <input type="radio" id="otamatone" name="style" value="otamatone"><label for="otamatone">Otamatone</label> (<a
+                href="https://youtu.be/VI5I3MuKJlo">original</a> by TheRealSullyG)
+            <input type="radio" id="garfield" name="style" value="garfield"><label for="garfield">Garfield</label> (<a
+                href="https://twitter.com/jondancesto/status/1199796307218427904">original</a> by @jondancesto)
+        </p>
+        <input type="submit" value="Overlay!">
+    </form>
+    <p><a href="https://t.me/crabravebot">also available as a Telegram bot</a></p>
+    <p>brought to you by <a href="https://www.boringcactus.com">boringcactus</a></p>
+</main>
+<img id="preview" style="max-width: 100%;" src="/render?style=classic&ext=png&text=">
+<script type="text/javascript">
+    const img = document.getElementById('preview'),
+        text = document.getElementById('text'),
+        classic = document.getElementById('classic');
+    setInterval(() => {
+        let style = document.querySelector('input[name="style"]:checked').value;
+        img.src = "/render?style=" + encodeURIComponent(style) + '&ext=png&text=' + encodeURIComponent(text.value);
+    }, 1000);
+</script>
+</body>
+</html>

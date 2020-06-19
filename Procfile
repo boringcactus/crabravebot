@@ -1,1 +1,1 @@
-web: micro-bot -p $PORT
+web: gunicorn bot:app --log-file -
