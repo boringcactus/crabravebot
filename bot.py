@@ -177,11 +177,12 @@ def inline_query(update: telegram.Update, context: CallbackContext):
 
 
 def message(update: telegram.Update, context: CallbackContext):
-    text = update.effective_message.text
+    if update.effective_chat.type == telegram.Chat.PRIVATE:
+        text = update.effective_message.text
 
-    logger.info('Got query %s', text)
+        logger.info('Got query %s', text)
 
-    update.effective_message.reply_video(BytesIO(make_video(text, STYLES[0].id)))
+        update.effective_message.reply_video(BytesIO(make_video(text, 'classic')))
 
 
 @app.route('/')
