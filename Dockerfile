@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD [ "gunicorn", "-w", "1", "bot:app", "--log-file", "-" ]
+CMD [ "gunicorn", "-b", "0.0.0.0:8000", "-w", "1", "bot:app", "--log-file", "-" ]
