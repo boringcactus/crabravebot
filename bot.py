@@ -13,13 +13,10 @@ from typing import Optional
 
 import telegram
 from telegram.ext import Dispatcher, MessageHandler, CommandHandler, InlineQueryHandler, Filters, CallbackContext
-from dotenv import load_dotenv, find_dotenv
 from PIL import Image, ImageDraw, ImageFont
 import libhoney
 from flask import Flask, render_template, request
 app = Flask(__name__)
-
-load_dotenv(find_dotenv())
 
 libhoney.init(writekey=os.environ.get('HONEYCOMB_KEY'), dataset="crabravebot", debug=True)
 
@@ -149,11 +146,11 @@ def start(update: telegram.Update, context: CallbackContext):
 To shitpost, type @{me} and type the text you want to overlay over crab rave.
 This was originally made by @boringcactus in one afternoon when ze was bored.
 This bot isn't super reliable but the source is at https://github.com/boringcactus/crabravebot,
-and you can use this bot from the Web at https://{name}.herokuapp.com/"""
+and you can use this bot from the Web at https://{domain}/"""
     you = update.effective_user.first_name
     if you is None or len(you) == 0:
         you = update.effective_user.username
-    text = template.format(you=you, me=context.bot.username, name=os.environ.get('HEROKU_APP_NAME', 'crabravebot'))
+    text = template.format(you=you, me=context.bot.username, domain=os.environ.get('VIRTUAL_HOST', 'crabrave.boringcactus.com'))
     context.bot.send_message(chat_id=update.effective_chat.id, text=text)
 
 
@@ -164,7 +161,7 @@ def inline_query(update: telegram.Update, context: CallbackContext):
     logger.info('Got query %s', text)
 
     def make_result(style: Style):
-        base = "https://" + os.environ.get('HEROKU_APP_NAME', 'crabravebot') + ".herokuapp.com/render?v=1&style=" + style.id + "&text=" + url_quote(text, safe='')
+        base = "https://" + os.environ.get('VIRTUAL_HOST', 'crabrave.boringcactus.com') + "/render?v=1&style=" + style.id + "&text=" + url_quote(text, safe='')
         return telegram.InlineQueryResultVideo(
             id=style.id,
             video_url=base + '&ext=mp4',
@@ -219,7 +216,7 @@ def webhook():
 
 
 bot = telegram.Bot(token=TOKEN)
-bot.set_webhook('https://' + os.environ.get('HEROKU_APP_NAME', 'crabravebot') + '.herokuapp.com' + WEBHOOK)
+bot.set_webhook('https://' + os.environ.get('VIRTUAL_HOST', 'crabrave.boringcactus.com') + WEBHOOK)
 update_queue = Queue()
 dp = Dispatcher(bot, update_queue, use_context=True)
 # Add handlers

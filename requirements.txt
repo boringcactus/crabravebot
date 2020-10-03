@@ -1,5 +1,4 @@
 python-telegram-bot
-python-dotenv
 Pillow
 libhoney
 Flask
