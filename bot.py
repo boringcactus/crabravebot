@@ -49,6 +49,7 @@ def get_styles():
         image = list(folder.glob('*.png'))[0]
         video = list(folder.glob('*.mp4'))[0]
         result.append(Style(s_id, name, source, image, video))
+    result.sort(key=lambda x: x.name)
     return result
 
 
