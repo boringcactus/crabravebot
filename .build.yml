@@ -1,0 +1,10 @@
+image: alpine/latest
+packages:
+    - rsync
+sources:
+    - https://git.sr.ht/~boringcactus/crabravebot
+secrets:
+    - b5cb9b2b-1461-4486-95e1-886451674a89
+tasks:
+    - deploy: |
+        ssh -o StrictHostKeyChecking=no services@boringcactus.com /var/www/crabravebot-test/update.sh
